@@ -3,7 +3,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-4">
-            <img {% if book.cover is not defined %}src="{{ asset('uploads/covers/' ~ book.cover) }}"{% else %}
+            <img {% if book.cover is not null %}src="{{ asset('uploads/covers/' ~ book.cover) }}"{% else %}
                     src="{{ asset('uploads/covers/aba-06.png') }}"{% endif %}
                   class="img-responsive img-rounded" alt="The book image">
         </div>
