@@ -16,3 +16,4 @@ Just clone the app to your working location
 
 - You can access the api documentation by going to `/api/v1/doc`
 - Join the board to see the Issues [Board](https://waffle.io/DDDevelopers/Libri/join)
+- Also you can access the chat in the [Hipchat](https://www.hipchat.com/gX13zA37i)
