@@ -28,14 +28,24 @@ class UserController extends Controller
      * @Route("/me", name="my_profile")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function profileAction()
+    public function profileAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(UserType::class, $this->getUser());
+        $form->handleRequest($request);
+        if($form->isValid()) {
+            $user = $form->getData();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Your profile is updated..');
+        }
 
         $timeline = $em->getRepository(Timeline::class)->getAllAndOrderByLatest();
 
         return $this->render('@App/user/profile.html.twig', [
-            'timeline' => $timeline
+            'timeline' => $timeline,
+            'profile' => $form->createView()
         ]);
     }
 

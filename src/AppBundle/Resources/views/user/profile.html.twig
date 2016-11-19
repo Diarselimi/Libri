@@ -31,13 +31,18 @@
                     <!-- SIDEBAR MENU -->
                     <div class="profile-usermenu">
                         <ul class="nav">
-                            <li class="active">
-                                <a href="#">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="profile" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-home"></i>
-                                    Overview </a>
+                                    {{ 'Dashboard'|trans }}</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
+                                    <i class="glyphicon glyphicon-home"></i>
+                                    {{ 'Profile' }} </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="#time" aria-controls="profile" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-user"></i>
                                     Account Settings </a>
                             </li>
@@ -47,9 +52,9 @@
                                     Tasks </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="#timeline" aria-controls="profile" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-flag"></i>
-                                    Help </a>
+                                    {{ 'Timeline'|trans }} </a>
                             </li>
                         </ul>
                     </div>
@@ -57,35 +62,104 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="profile-content">
-                    <h2>{{ 'Timeline'|trans }}</h2>
-                    <ul class="timeline">
-                        <li class="first-dot">
-                            <p class="timeline-date">{{ "now"|date('D g:i a') }}</p>
-                            <div class="timeline-content">
-                                <h3>{{ 'Today'|trans }}</h3>
-                            </div>
-                        </li>
-                        {% for event in timeline %}
-                            <li>
-                                <p class="timeline-date">{{ event.createdAt|date('D g:i a') }}</p>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        <canvas id="myChart" width="400" height="100">asd</canvas>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <h3>{{ 'Personal data'|trans }}</h3>
+                        {{ form_start(profile) }}
+                        {{ form_row(profile.name) }}
+                        {{ form_row(profile.lastname) }}
+                        {{ form_row(profile.username) }}
+                        {{ form_row(profile.email) }}
+                        {{ form_row(profile.plainPassword) }}
+                        <button type="submit" class="btn btn-primary">{{ 'Update'|trans }}</button>
+                        {{ form_end(profile) }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="timeline">
+                        <h2>{{ 'Timeline'|trans }}</h2>
+                        <ul class="timeline">
+                            <li class="first-dot">
+                                <p class="timeline-date">{{ "now"|date('D g:i a') }}</p>
                                 <div class="timeline-content">
-                                    <h3>{{ event.title }}</h3>
-                                    <p>{{ event.description }}</p>
-                                    <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}" class="btn btn-default">{{ 'Open'|trans }}</a>
+                                    <h3>{{ 'Today'|trans }}</h3>
                                 </div>
                             </li>
-                        {% endfor %}
-                    </ul>
+                            {% for event in timeline %}
+                                <li>
+                                    <p class="timeline-date">{{ event.createdAt|date('D g:i a') }}</p>
+                                    <div class="timeline-content">
+                                        <h3>{{ event.title }}</h3>
+                                        <p>{{ event.description }}</p>
+                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}"
+                                           class="btn btn-default">{{ 'Open'|trans }}</a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Tab panes -->
 {% endblock %}
 
 {% block stylesheet %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/timeline.css') }}">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/node_modules/chart.js/dist/Chart.js') }}"></script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"],
+                datasets: [
+                    {
+                        label: "Total pages read",
+                        fill: true,
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,0)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: [65, 59, 5, 81, 22, 55, 40, 10, 9, 10, 20],
+                        spanGaps: true,
+
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display:false
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            }
+            });
+    </script>
 {% endblock %}
