@@ -8,5 +8,8 @@ image: phpunit/phpunit:5.0.3
 pipelines:
   default:
     - step:
-        script: # Modify the commands below to build your repository.
+        script:
+          - composer --version
+          - phpunit --version
           - composer install
+          - phpunit --configuration tests/phpunit.xml
