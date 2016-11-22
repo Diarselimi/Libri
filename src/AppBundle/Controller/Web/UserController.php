@@ -6,6 +6,7 @@ use AppBundle\Entity\Book;
 use AppBundle\Entity\Shelf;
 use AppBundle\Entity\Timeline;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserBookShelf;
 use AppBundle\Form\AvatarType;
 use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -49,12 +50,13 @@ class UserController extends Controller
             $this->addFlash('success', 'Your profile is updated..');
         }
 
+
         $timeline = $em->getRepository(Timeline::class)->getAllAndOrderByLatest(5);
 
         return $this->render('@App/user/profile.html.twig', [
             'timeline' => $timeline,
             'profile' => $form->createView(),
-            'avatar' => $avatar->createView()
+            'avatar' => $avatar->createView(),
         ]);
     }
 

@@ -3,9 +3,10 @@ namespace AppBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserBookShelfRepository")
  * @ORM\Table(name="user_book_shelf")
  */
 class UserBookShelf
@@ -18,14 +19,19 @@ class UserBookShelf
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="shelfedBooks")
+     * @Serializer\Exclude()
+     * @Serializer\MaxDepth(1)
      */
     private $user;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Book", inversedBy="usersShelfed")
+     * @Serializer\MaxDepth(1)
+     * @Serializer\Exclude()
      */
     private $book;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Shelf", inversedBy="usersBooks")
+     * @Serializer\MaxDepth(1)
      */
     private $shelf;
     /**

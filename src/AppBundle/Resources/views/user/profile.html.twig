@@ -124,50 +124,55 @@
     <script src="{{ asset('assets/node_modules/chart.js/dist/Chart.js') }}"></script>
     <script>
         var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"],
-                datasets: [
-                    {
-                        label: "Total pages read",
-                        fill: true,
-                        lineTension: 0.3,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,0)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: [65, 59, 5, 81, 22, 55, 40, 10, 9, 10, 20],
-                        spanGaps: true,
+        var dbData;
 
+        $.getJSON( "{{ path('get_data_for_one_year') }}", function( result ) {
+            dbData = JSON.parse(result);
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"],
+                    datasets: [
+                        {
+                            label: "Total pages read",
+                            fill: true,
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(75,192,192,0.4)",
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#fff",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,0)",
+                            pointHoverBorderWidth: 2,
+                            pointRadius: 1,
+                            pointHitRadius: 10,
+                            data: dbData,
+                            spanGaps: true,
+
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display:false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
                     }
-                ]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display:false
-                        }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: false
-                        }
-                    }]
                 }
-            }
             });
+        });
     </script>
 {% endblock %}

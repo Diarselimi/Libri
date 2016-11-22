@@ -11,23 +11,30 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\BaseController;
 use AppBundle\Entity\Book;
+use AppBundle\Entity\UserBookShelf;
+use AppBundle\Utils\ChartsData;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserBookShelfController extends BaseController
 {
     /**
-     * This function will return the timeline items
-     * @Route("/userbook/{book}")
+     * This function will return the books read in this year
+     * @Route("/userbook", name="get_data_for_one_year")
      * @Method(methods={"get"})
      * @ApiDoc(
      *  resource=true,
      *  )
      */
-    public function getBooksReadPerMonthAction(Request $request, Book $book)
+    public function getBooksReadPerMonthAction()
     {
-        
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $userBookShelf = $em->getRepository(UserBookShelf::class)->findAllForThisYear($user);
+        $charts = new ChartsData();
+        $data = $charts->countBooksByMonth($userBookShelf);
+        return $this->createApiResponse($data);
     }
 }
