@@ -25,7 +25,7 @@ $('.submit_form_js').submit(function (e) {
         data: currentForm.serializeArray(),
         type: 'POST',
         success: function (result) {
-            console.log(result);
+            //do some process here
         }
     });
     return false;
