@@ -16,6 +16,11 @@ class TimelineLogger implements EventSubscriber
         UserBookShelf::class
     ];
 
+    private $images = [
+        'review' => 'favorites.svg',
+        'userbookshelf' => 'shelf.svg'
+    ];
+
     private $timelineMessages = [
         'review' => [
             'title' => 'Book review',
@@ -67,6 +72,7 @@ class TimelineLogger implements EventSubscriber
             $timeline->setParentId($entity->getBook()->getId());
             $timeline->setLink('no link');
             $timeline->setUserId($entity->getUser()->getId());
+            $timeline->setImage($this->getImage());
             
             $em->persist($timeline);
             $em->flush();
@@ -99,5 +105,10 @@ class TimelineLogger implements EventSubscriber
     protected function getDescription($val1, $val2 = null)
     {
         return sprintf($this->timelineMessages[strtolower($this->currentEntity)]['description'], $val1, $val2);
+    }
+
+    public function getImage()
+    {
+        return $this->images[strtolower($this->currentEntity)];
     }
 }

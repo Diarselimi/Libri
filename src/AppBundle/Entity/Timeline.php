@@ -41,6 +41,10 @@ class Timeline
      */
     private $createdAt;
     /**
+     * @ORM\Column(type="string")
+     */
+    private $image;
+    /**
      * @var
      * @ORM\Column(type="integer", name="user_id")
      */
@@ -169,6 +173,22 @@ class Timeline
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
     }
 
 

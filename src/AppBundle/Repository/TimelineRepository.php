@@ -6,11 +6,12 @@ use Doctrine\ORM\EntityRepository;
 
 class TimelineRepository extends EntityRepository
 {
-    public function getAllAndOrderByLatest()
+    public function getAllAndOrderByLatest($limit = 20, $offset = 0)
     {
         return $this->createQueryBuilder('t')
             ->orderBy('t.createdAt', 'DESC')
-            ->setMaxResults(20)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

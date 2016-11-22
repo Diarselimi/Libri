@@ -69,6 +69,12 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
     /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please upload an avatar")
+     */
+    private $avatar;
+    /**
      * @ORM\Column(type="json_array")
      */
     private $roles = [];
@@ -440,4 +446,22 @@ class User implements UserInterface, \Serializable
     {
         return $this->reviews;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
+
 }

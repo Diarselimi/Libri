@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Web;
 use AppBundle\Entity\Book;
 use AppBundle\Entity\Review;
 use AppBundle\Entity\UserBookShelf;
+use AppBundle\Form\BookPagesReadType;
 use AppBundle\Form\BookToShelfType;
 use AppBundle\Form\BookType;
 use AppBundle\Form\RateType;
@@ -33,7 +34,7 @@ class BookController extends Controller
             $file = $book->getCover();
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.jpg';
+            $fileName = md5(uniqid()) . '.jpg';
 
             // Move the file to the directory where brochures are stored
             $file->move(
@@ -66,10 +67,11 @@ class BookController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $addToShelfForm = $this->createForm(BookToShelfType::class, $em->getRepository(UserBookShelf::class)->findOneBy([
+        $bookToShelf = $em->getRepository(UserBookShelf::class)->findOneBy([
             'user' => $this->getUser()->getId(),
             'book' => $book->getId()
-        ]), [
+        ]);
+        $addToShelfForm = $this->createForm(BookToShelfType::class, $bookToShelf, [
             'action' => $this->generateUrl('save_book_in_shelf', ['id' => $book->getId()]),
             'method' => 'post'
         ]);
@@ -84,27 +86,32 @@ class BookController extends Controller
             $em->getRepository('AppBundle:Review')->findOneBy(
                 ['book' => $book->getId(), 'user' => $this->getUser()->getId()]
             ), [
-                'method' => 'post',
-                'action' => $this->generateUrl('insert_new_review', ['id' => $book->getId()])
-            ]);
+            'method' => 'post',
+            'action' => $this->generateUrl('insert_new_review', ['id' => $book->getId()])
+        ]);
 
         if (!$rate) {
             $rate = new Review();
         }
 
+        $updatePages = $this->createForm(BookPagesReadType::class, $bookToShelf, [
+            'method' => 'post',
+            'action' => $this->generateUrl('app_api_book_pageupdate', ['id' => $book->getId()])
+        ]);
+
 
         $rateForm = $this->createForm(RateType::class, $rate, [
             'method' => 'post',
             'action' => $this->generateUrl('rate_the_book', ['id' => $book->getId()])
-        ])
-            ->add('submit', SubmitType::class);
+        ]);
 
         //this will show the book
         return $this->render('@App/book/book.html.twig', [
             'book' => $book,
             'reviewForm' => $reviewForm->createView(),
             'shelfForm' => $addToShelfForm->createView(),
-            'rateForm' => $rateForm->createView()
+            'rateForm' => $rateForm->createView(),
+            'bookToShelf' => $updatePages->createView()
         ]);
     }
 

@@ -7,8 +7,12 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ asset('assets/node_modules/jquery-bar-rating/examples/img/antenna.png') }}"
+                        <img src="{{ asset('uploads/users/avatar/' ~ app.user.avatar) }}"
                              class="img-responsive" alt="">
+                        {{ form_start(avatar) }}
+                            {{ form_row(avatar.avatar) }}
+                            <button>upload</button>
+                        {{ form_end(avatar) }}
                     </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
@@ -79,25 +83,28 @@
                     </div>
                     <div role="tabpanel" class="tab-pane" id="timeline">
                         <h2>{{ 'Timeline'|trans }}</h2>
-                        <ul class="timeline">
-                            <li class="first-dot">
-                                <p class="timeline-date">{{ "now"|date('D g:i a') }}</p>
-                                <div class="timeline-content">
-                                    <h3>{{ 'Today'|trans }}</h3>
-                                </div>
-                            </li>
+                        <section id="cd-timeline" class="cd-container">
+                            <div class="cd-today-date">
+                                {{ 'now'|date('D g:i a') }}
+                            </div>
                             {% for event in timeline %}
-                                <li>
-                                    <p class="timeline-date">{{ event.createdAt|date('D g:i a') }}</p>
-                                    <div class="timeline-content">
-                                        <h3>{{ event.title }}</h3>
+                                <div class="cd-timeline-block">
+                                    <div class="cd-timeline-img cd-picture">
+                                        <img src="{{ asset('assets/images/timeline/' ~ event.image) }}" alt="Picture">
+                                    </div> <!-- cd-timeline-img -->
+
+                                    <div class="cd-timeline-content">
+                                        <h2>{{ event.title }}</h2>
                                         <p>{{ event.description }}</p>
-                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}"
-                                           class="btn btn-default">{{ 'Open'|trans }}</a>
-                                    </div>
-                                </li>
+                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}" class="cd-read-more">{{ 'Open'|trans }}</a>
+                                        <span class="cd-date">{{ event.createdAt|date('D g:i a') }}</span>
+                                    </div> <!-- cd-timeline-content -->
+                                </div> <!-- cd-timeline-block -->
                             {% endfor %}
-                        </ul>
+                            <div class="cd-load-more btn">
+                                {{ 'Load more'|trans }}
+                            </div>
+                        </section> <!-- cd-timeline -->
                     </div>
                 </div>
             </div>
@@ -108,11 +115,12 @@
 
 {% block stylesheet %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/css/timeline.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/vertical-timeline.css') }}">
 {% endblock %}
 
 {% block scripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/vertical-timeline.js') }}"></script>
     <script src="{{ asset('assets/node_modules/chart.js/dist/Chart.js') }}"></script>
     <script>
         var ctx = document.getElementById("myChart");

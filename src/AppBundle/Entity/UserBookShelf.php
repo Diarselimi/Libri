@@ -29,6 +29,10 @@ class UserBookShelf
      */
     private $shelf;
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pages;
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -174,4 +178,22 @@ class UserBookShelf
     {
         return $this->shelf;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
+    /**
+     * @param mixed $pages
+     */
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
+    }
+
+
 }
