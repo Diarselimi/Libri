@@ -3,6 +3,7 @@ AppBundle\Entity\User:
         name: <name()>
         lastname: <lastname()>
         username: <username()>
+        avatar: <name()>
         email: <email()>
         phone: <numberBetween(100,10000)>
         plainPassword: <numberBetween(444444, 555555)>
@@ -21,6 +22,7 @@ AppBundle\Entity\Book:
     book_{1..200}:
         title: <title()>
         description: <text()>
+        cover: <name()>
         pages: <numberBetween(200, 600)>
         author: '@author_<numberBetween(1, 50)>'
         createdAt: <dateTimeBetween("-200 days", "now")>

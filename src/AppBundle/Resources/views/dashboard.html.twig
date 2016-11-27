@@ -3,6 +3,7 @@
 {% block stylesheet %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/iconfont/horizontalListing.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -25,39 +26,39 @@
     <div class="row">
         <div class="col-md-4">
             <h3 class="title">{{ 'Most rated books'|trans }}</h3>
-            <ul class="list-group">
+            <ul class="list-group books">
                 {% for book in books %}
-                    <li class="list-group-item">
-                        <img src="{{ asset('uploads/covers/2d4e6649a60eec5fe1544ea1ac2496b7.jpg') }}" alt=""
-                             width="70px"
-                             class="img-responsive ">
-                        <h4>{{ book.title }}</h4>
-                        <p>some description here </p>
-                        <label for="">rating here</label>
+                    <li class="list-group-item book-item">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="#" class="btn btn-default">{{'View book'|trans}}</a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-md-4">
             <h3 class="title">{{ 'Most readed books'|trans }}</h3>
-            <ul class="list-group">
+            <ul class="list-group books">
                 {% for book in books %}
-                    <li class="list-group-item">
-                        {{ book.title }}
-                        <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-info btn-sm"><i
-                                    class="fa fa-edit"></i>View</a>
+                    <li class="list-group-item book-item">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="#" class="btn btn-default">{{'View book'|trans}}</a>
                     </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="col-md-4">
             <h3 class="title">{{ 'Latest books'|trans }}</h3>
-            <ul class="list-group">
+            <ul class="list-group books">
                 {% for book in books %}
-                    <li class="list-group-item">
-                        {{ book.title }}
-                        <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-info btn-sm"><i
-                                    class="fa fa-edit"></i>View</a>
+                    <li class="list-group-item book-item">
+                        <img class="img-expand" src="{{ asset('uploads/covers/' ~ book.cover) }}" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-default">{{'View book'|trans}}</a>
                     </li>
                 {% endfor %}
             </ul>
