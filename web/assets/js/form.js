@@ -10,7 +10,6 @@ $('input, select').on('input change', function () {
     var input = $(this);
 
     var button = input.closest('form').find('button');
-
     if(button.attr('type') != 'submit') {
         input.closest('form').submit();
     }

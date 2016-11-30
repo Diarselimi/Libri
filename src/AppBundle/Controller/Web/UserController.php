@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserBookShelf;
 use AppBundle\Form\AvatarType;
 use AppBundle\Form\UserType;
+use AppBundle\Form\GoalType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,6 +38,8 @@ class UserController extends Controller
 
         $form = $this->createForm(UserType::class, $this->getUser());
 
+        $goalForm = $this->createForm(GoalType::class);
+
         $avatar = $this->createForm(AvatarType::class, new User(), [
             'method' => 'POST',
             'action' => $this->generateUrl('insert_new_avatar')
@@ -57,6 +60,7 @@ class UserController extends Controller
             'timeline' => $timeline,
             'profile' => $form->createView(),
             'avatar' => $avatar->createView(),
+            'goalForm' => $goalForm->createView()
         ]);
     }
 

@@ -7,11 +7,9 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ asset('uploads/users/avatar/' ~ app.user.avatar) }}"
-                             class="img-responsive" alt="">
+                        <img src="{{ asset('uploads/users/avatar/' ~ app.user.avatar) }}" class="img-responsive" alt="">
                         {{ form_start(avatar) }}
-                            {{ form_row(avatar.avatar) }}
-                            <button>upload</button>
+                        {{ form_row(avatar.avatar) }}
                         {{ form_end(avatar) }}
                     </div>
                     <!-- END SIDEBAR USERPIC -->
@@ -21,16 +19,13 @@
                             {{ app.user.name }}
                             {{ app.user.lastname }}
                         </div>
-                        <div class="profile-usertitle-job">
-                            Title
-                        </div>
                     </div>
                     <!-- END SIDEBAR USER TITLE -->
                     <!-- SIDEBAR BUTTONS -->
-                    <div class="profile-userbuttons">
-                        <button type="button" class="btn btn-success btn-sm">Follow</button>
-                        <button type="button" class="btn btn-danger btn-sm">Message</button>
-                    </div>
+                    {#<div class="profile-userbuttons">#}
+                    {#<button type="button" class="btn btn-success btn-sm">Follow</button>#}
+                    {#<button type="button" class="btn btn-danger btn-sm">Message</button>#}
+                    {#</div>#}
                     <!-- END SIDEBAR BUTTONS -->
                     <!-- SIDEBAR MENU -->
                     <div class="profile-usermenu">
@@ -38,22 +33,17 @@
                             <li role="presentation" class="active">
                                 <a href="#info" aria-controls="profile" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-home"></i>
-                                    {{ 'Dashboard'|trans }}</a>
-                            </li>
-                            <li role="presentation" class="">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">
-                                    <i class="glyphicon glyphicon-home"></i>
-                                    {{ 'Profile' }} </a>
+                                    {{ 'Profile'|trans }} </a>
                             </li>
                             <li>
-                                <a href="#time" aria-controls="profile" role="tab" data-toggle="tab">
+                                <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-user"></i>
-                                    Account Settings </a>
+                                    {{ 'Account Settings'|trans }} </a>
                             </li>
                             <li>
-                                <a href="#" target="_blank">
+                                <a href="#goals" ria-controls="settings" role="tab" data-toggle="tab">
                                     <i class="glyphicon glyphicon-ok"></i>
-                                    Tasks </a>
+                                    {{ 'Goals'|trans }} </a>
                             </li>
                             <li>
                                 <a href="#timeline" aria-controls="profile" role="tab" data-toggle="tab">
@@ -68,9 +58,20 @@
             <div class="col-md-9">
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="info">
+                        <div class="progress progress-striped active">
+
+                            <p class="alert alert-success raised"><strong>Raised: $1,031.00</strong></p>
+
+                            <p class="alert alert-success goal"><strong>Goal: $4,200.00</strong></p>
+
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                 aria-valuemax="100" style="width: 60%;">
+                                <span class="sr-only">60% Complete</span>
+                            </div>
+                        </div>
                         <canvas id="myChart" width="400" height="100">asd</canvas>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="profile">
+                    <div role="tabpanel" class="tab-pane" id="settings">
                         <h3>{{ 'Personal data'|trans }}</h3>
                         {{ form_start(profile) }}
                         {{ form_row(profile.name) }}
@@ -80,6 +81,20 @@
                         {{ form_row(profile.plainPassword) }}
                         <button type="submit" class="btn btn-primary">{{ 'Update'|trans }}</button>
                         {{ form_end(profile) }}
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="goals">
+                        <h3>{{ 'Set a new goal'|trans }}</h3>
+                        {{ form_start(goalForm) }}
+                        <label for="">Book i will read in this year.</label>
+                        <div class="input-group">
+                            {{ form_widget(goalForm.booksToRead) }}
+                            <div class="input-group-btn">
+                                <button class="btn bt-default" type="submit">asd</button>
+                            </div>
+                        </div>
+                        {{ form_end(goalForm) }}
+
+                        <h3>{{ 'Previous goals'|trans }}</h3>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="timeline">
                         <h2>{{ 'Timeline'|trans }}</h2>
@@ -96,7 +111,8 @@
                                     <div class="cd-timeline-content">
                                         <h2>{{ event.title }}</h2>
                                         <p>{{ event.description }}</p>
-                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}" class="cd-read-more">{{ 'Open'|trans }}</a>
+                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}"
+                                           class="cd-read-more">{{ 'Open'|trans }}</a>
                                         <span class="cd-date">{{ event.createdAt|date('D g:i a') }}</span>
                                     </div> <!-- cd-timeline-content -->
                                 </div> <!-- cd-timeline-block -->
@@ -126,7 +142,7 @@
         var ctx = document.getElementById("myChart");
         var dbData;
 
-        $.getJSON( "{{ path('get_data_for_one_year') }}", function( result ) {
+        $.getJSON("{{ path('get_data_for_one_year') }}", function (result) {
             dbData = JSON.parse(result);
             new Chart(ctx, {
                 type: 'line',
@@ -162,7 +178,7 @@
                     scales: {
                         xAxes: [{
                             gridLines: {
-                                display:false
+                                display: false
                             }
                         }],
                         yAxes: [{
