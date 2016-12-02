@@ -3,6 +3,7 @@ namespace AppBundle\Controller\Web;
 
 
 use AppBundle\Entity\Book;
+use AppBundle\Entity\Goal;
 use AppBundle\Entity\Shelf;
 use AppBundle\Entity\Timeline;
 use AppBundle\Entity\User;
@@ -38,7 +39,11 @@ class UserController extends Controller
 
         $form = $this->createForm(UserType::class, $this->getUser());
 
-        $goalForm = $this->createForm(GoalType::class);
+        $goal = $em->getRepository(Goal::class)->findCurrentGoal();
+        $goalForm = $this->createForm(GoalType::class, $goal, [
+            'action' => $this->generateUrl('create_new_goal'),
+            'method' => 'post'
+        ]);
 
         $avatar = $this->createForm(AvatarType::class, new User(), [
             'method' => 'POST',
@@ -131,6 +136,7 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @Route("/me/new/avatar", name="insert_new_avatar")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function avatarAction(Request $request)
     {
@@ -141,18 +147,8 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            // $file stores the uploaded PDF file
-            /** @var UploadedFile $file */
-            $file = $user->getAvatar();
-
-            // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-
-            // Move the file to the directory where brochures are stored
-            $file->move(
-                $this->getParameter('user_avatar_dir'),
-                $fileName
-            );
+           $fileName = $this->get('app.avatar_uploader')
+               ->upload($request->files->get('avatar')['avatar']);
 
             // Update the 'brochure' property to store the PDF file name
             // instead of its contents

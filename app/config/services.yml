@@ -31,3 +31,6 @@ services:
             public: false
             tags:
                 - { name: twig.extension }
+    app.avatar_uploader:
+        class: AppBundle\Uploader\FileUploader
+        arguments: ['%avatar_directory%']
