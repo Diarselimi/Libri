@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 class BookRepository extends EntityRepository
 {
 
-    public function searchAllBooks($query = null)
+    public function searchAllBooks($query = null, $limit = 10)
     {
         $q = $this->createQueryBuilder('book')
             ->leftJoin('book.author', 'author')
@@ -21,7 +21,7 @@ class BookRepository extends EntityRepository
 
         return $q
             ->orderBy('book.createdAt', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
@@ -48,6 +48,33 @@ class BookRepository extends EntityRepository
             ->andWhere('book.user = :user')
             ->setParameter('user', $user->getId())
             ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * This function will return all most rated books
+     * @param int $limit
+     * @return \AppBundle\Entity\Book[]
+     */
+    public function findAllRated($limit = 10)
+    {
+        return $this->createQueryBuilder('book')
+            ->leftJoin('book.reviews', 'reviews')
+            ->groupBy('book.id')
+            ->orderBy('reviews.rating', 'DESC')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->getResult();
+    }
+
+    public function findAllReaded($limit = 10)
+    {
+        return $this->createQueryBuilder('book')
+            ->leftJoin('book.usersShelfed', 'users_shelfed')
+            ->groupBy('book.id')
+            ->orderBy('users_shelfed.shelf', 'DESC')
+            ->getQuery()
+            ->setMaxResults($limit)
             ->getResult();
     }
 }

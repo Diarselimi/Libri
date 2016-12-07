@@ -13,7 +13,7 @@
                 {#//to set the width of the category#}
                 {% set width = 100 / categories|length %}
                 {% for category in categories %}
-                    <li class="list-group-item" style="width: {{ width }}%;">
+                    <li class="list-group-item" style="width: {{ width }}%;" onclick="loadBooksFromCategory({{ category.id }})">
                         <img src="{{ asset('assets/images/bookcategories/' ~ category.icon) }}" alt="{{ category.title }}"
                              width="30%">
                         <a href="#"><p class="category-title">{{ category.title }}</p></a>
@@ -24,10 +24,18 @@
         </div>
     </div>
     <div class="row">
+        <ul class="col-md-12" id="books_from_category" data-book_html="">
+            <li class="book_preview">
+                <img class="cover" src="#" alt="">
+                <p><span>s</span></p>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             <h3 class="title">{{ 'Most rated books'|trans }}</h3>
             <ul class="list-group books">
-                {% for book in books %}
+                {% for book in mostrated %}
                     <li class="list-group-item book-item">
                         <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
                         <h3>{{ book.title }}</h3>
@@ -40,7 +48,7 @@
         <div class="col-md-4">
             <h3 class="title">{{ 'Most readed books'|trans }}</h3>
             <ul class="list-group books">
-                {% for book in books %}
+                {% for book in mostreaded %}
                     <li class="list-group-item book-item">
                         <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
                         <h3>{{ book.title }}</h3>
@@ -64,4 +72,9 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="dashboard.js"></script>
 {% endblock %}
