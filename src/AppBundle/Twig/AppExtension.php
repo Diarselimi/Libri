@@ -4,14 +4,17 @@ namespace AppBundle\Twig;
 use AppBundle\Entity\Review;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AppExtension extends \Twig_Extension
 {
+    
     public function getFilters()
     {
         return array(
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('avg', array($this, 'findAvarage')),
+            new \Twig_SimpleFilter('isNavActive', array($this, 'isNavActive')),
         );
     }
 
@@ -42,5 +45,19 @@ class AppExtension extends \Twig_Extension
     public function getName()
     {
         return 'app_extension';
+    }
+
+    /**
+     * This function will recieve the path name and will check if that is the current path that we are in
+     * @param $path
+     * @return bool
+     */
+    public function isNavActive($path, $currentPath, $active = 'active')
+    {
+        if($path == $currentPath) {
+            return $active;
+        }else{
+            return "";
+        }
     }
 }

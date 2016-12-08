@@ -3,12 +3,17 @@ namespace AppBundle\Controller\Web;
 
 
 use AppBundle\Entity\Book;
+use AppBundle\Entity\Goal;
 use AppBundle\Entity\Shelf;
 use AppBundle\Entity\Timeline;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserBookShelf;
+use AppBundle\Form\AvatarType;
 use AppBundle\Form\UserType;
+use AppBundle\Form\GoalType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,14 +33,39 @@ class UserController extends Controller
      * @Route("/me", name="my_profile")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function profileAction()
+    public function profileAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $timeline = $em->getRepository(Timeline::class)->getAllAndOrderByLatest();
+        $form = $this->createForm(UserType::class, $this->getUser());
+
+        $goal = $em->getRepository(Goal::class)->findCurrentGoal();
+        $goalForm = $this->createForm(GoalType::class, $goal, [
+            'action' => $this->generateUrl('create_new_goal'),
+            'method' => 'post'
+        ]);
+
+        $avatar = $this->createForm(AvatarType::class, new User(), [
+            'method' => 'POST',
+            'action' => $this->generateUrl('insert_new_avatar')
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $user = $form->getData();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'Your profile is updated..');
+        }
+
+
+        $timeline = $em->getRepository(Timeline::class)->getAllAndOrderByLatest(5);
 
         return $this->render('@App/user/profile.html.twig', [
-            'timeline' => $timeline
+            'timeline' => $timeline,
+            'profile' => $form->createView(),
+            'avatar' => $avatar->createView(),
+            'goalForm' => $goalForm->createView()
         ]);
     }
 
@@ -63,7 +93,7 @@ class UserController extends Controller
         $form = $this->createUserForm($user);
         $form->handleRequest($request);
 
-        if($form->isValid() && $form->isSubmitted()){
+        if ($form->isValid() && $form->isSubmitted()) {
 
             //set the password to hash
             $password = $this->get('security.password_encoder')
@@ -78,7 +108,7 @@ class UserController extends Controller
         }
         return $this->render('@App/register.html.twig', ['form' => $form->createView()]);
     }
-    
+
     /**
      * Form builder
      */
@@ -102,4 +132,36 @@ class UserController extends Controller
             'books' => $books
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @Route("/me/new/avatar", name="insert_new_avatar")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function avatarAction(Request $request)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(AvatarType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+           $fileName = $this->get('app.avatar_uploader')
+               ->upload($request->files->get('avatar')['avatar']);
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $user->setAvatar($fileName);
+
+            // ... persist the $product variable or any other work
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Updated successfuly.');
+
+            return $this->redirect($this->generateUrl('my_profile'));
+        }
+    }
+
 }

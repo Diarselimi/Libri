@@ -1,0 +1,38 @@
+.books {
+    margin: 0;
+    padding: 0;
+}
+
+.books .book-item {
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+
+.books .book-item img {
+    height: 100%;
+    display: inline-block;
+    float: right;
+    word-break: break-all;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.books .book-item h3 {
+    width: 80%;
+    font-size: 18px;
+    margin: 5px 0 0 0;
+    padding: 0;
+}
+
+.books .book-item p {
+    width: 73%;
+    word-break: break-word;
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.books .book-item a {
+    margin: 5px 0 5px 0;
+}

@@ -15,6 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use AppBundle\Entity\Goal;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -69,6 +71,12 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
     /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please upload an avatar")
+     */
+    private $avatar;
+    /**
      * @ORM\Column(type="json_array")
      */
     private $roles = [];
@@ -82,6 +90,10 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="user")
      */
     private $reviews;
+    /**
+     * @ORM\OneToMany(targetEntity="Goal", mappedBy="user")
+     */
+    private $goals;
 
 
     public function __construct()
@@ -439,5 +451,57 @@ class User implements UserInterface, \Serializable
     public function getReviews()
     {
         return $this->reviews;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
+
+
+    /**
+     * Add goal
+     *
+     * @param \AppBundle\Entity\Goal $goal
+     *
+     * @return User
+     */
+    public function addGoal(\AppBundle\Entity\Goal $goal)
+    {
+        $this->goals[] = $goal;
+
+        return $this;
+    }
+
+    /**
+     * Remove goal
+     *
+     * @param \AppBundle\Entity\Goal $goal
+     */
+    public function removeGoal(\AppBundle\Entity\Goal $goal)
+    {
+        $this->goals->removeElement($goal);
+    }
+
+    /**
+     * Get goals
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGoals()
+    {
+        return $this->goals;
     }
 }

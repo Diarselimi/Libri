@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Web;
 
 use AppBundle\Entity\Book;
+use AppBundle\Entity\Goal;
 use AppBundle\Entity\UserBookShelf;
 use AppBundle\Form\BookToShelfType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -30,6 +31,11 @@ class ShelfController extends Controller
         $form->handleRequest($request);
 
         if($form->isValid()) {
+            if(strtolower($bookToShelf->getShelf()->getName()) == 'read') {
+                $goal = $em->getRepository(Goal::class)->findCurrentGoal();
+                $goal->setBooksRead($goal->getBooksRead() + 1);
+                $em->persist($goal);
+            }
             $bookToShelf->setUser($this->getUser());
             $bookToShelf->setBook($book);
             $em->persist($bookToShelf);

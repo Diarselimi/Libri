@@ -26,6 +26,7 @@ class CategoryData implements FixtureInterface
             $cat = new Category();
 
             $cat->setTitle($category);
+            $cat->setIcon('Food-100.png');
             $manager->persist($cat);
             $manager->flush();
         }

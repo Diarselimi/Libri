@@ -13,16 +13,14 @@
     {% block stylesheet %}
         <!-- Bootstrap Core CSS -->
         <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
-
         <!-- Custom CSS -->
         <link href="{{ asset('assets/css/profileMenu.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/rating.css') }}" rel="stylesheet">
-
+        <link href="{{ asset('assets/css/imageExpander.css') }}" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="{{ asset('assets/bower_components/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css">
         <link href="{{ asset('assets/css/material-design-icons.css') }}" rel="stylesheet" type="text/css">
-        <link href="{{ asset('assets/node_modules/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}"
-              rel="stylesheet" type="text/css">
+        <link href="{{ asset('assets/node_modules/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{{ asset('assets/css/rating.css') }}">
 
     {% endblock %}
@@ -42,6 +40,15 @@
     {{ include('navigation.html.twig') }}
 
     <div class="container">
+
+        {% for label, flashes in app.session.flashbag.all %}
+            {% for flash in flashes %}
+                <div class="alert alert-{{ label }}">
+                    {{ flash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
 
         {% block body %}
             <!-- Page Heading -->
@@ -67,10 +74,6 @@
     <!-- /.container-fluid -->
 
 </div>
-<!-- /#page-wrapper -->
-
-<!-- /#wrapper -->
-
 <!-- jQuery -->
 <script src="{{ asset('assets/bower_components/jquery/dist/jquery.js') }}"></script>
 <!-- Bootstrap Core JavaScript -->

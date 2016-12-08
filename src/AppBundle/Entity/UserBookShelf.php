@@ -3,9 +3,10 @@ namespace AppBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserBookShelfRepository")
  * @ORM\Table(name="user_book_shelf")
  */
 class UserBookShelf
@@ -18,16 +19,25 @@ class UserBookShelf
     private $id;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="shelfedBooks")
+     * @Serializer\Exclude()
+     * @Serializer\MaxDepth(1)
      */
     private $user;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Book", inversedBy="usersShelfed")
+     * @Serializer\MaxDepth(1)
+     * @Serializer\Exclude()
      */
     private $book;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Shelf", inversedBy="usersBooks")
+     * @Serializer\MaxDepth(1)
      */
     private $shelf;
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $pages;
     /**
      * @ORM\Column(type="datetime")
      */
@@ -174,4 +184,22 @@ class UserBookShelf
     {
         return $this->shelf;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
+    /**
+     * @param mixed $pages
+     */
+    public function setPages($pages)
+    {
+        $this->pages = $pages;
+    }
+
+
 }

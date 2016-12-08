@@ -18,7 +18,7 @@ class BookToShelfType extends AbstractType
             'class' => Shelf::class,
             'choice_label' => 'name',
             'choice_value' => 'id'
-        ])->add('submit', SubmitType::class);
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

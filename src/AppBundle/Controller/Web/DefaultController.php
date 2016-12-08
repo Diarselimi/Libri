@@ -15,13 +15,18 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $limit = 5;
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository(Book::class)->searchAllBooks($request->query->get('search'));
+        $books = $em->getRepository(Book::class)->searchAllBooks($request->query->get('search'), $limit);
+        $ratedBooks = $em->getRepository(Book::class)->findAllRated($limit);
+        $readedBooks = $em->getRepository(Book::class)->findAllReaded($limit);
         $categories = $em->getRepository(Category::class)->findAll();
         
         // replace this example code with whatever you need
         return $this->render('@App/dashboard.html.twig', [
             'books' => $books,
+            'mostrated' => $ratedBooks,
+            'mostreaded' => $readedBooks,
             'categories' => $categories
         ]);
     }

@@ -3,30 +3,78 @@
 {% block stylesheet %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('assets/css/iconfont/horizontalListing.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
 {% endblock %}
 
 {% block body %}
     <div class="row">
-        <ul class="list-group list-group-horizontal">
-            {#//to set the width of the category#}
-            {% set width = 100 / categories|length %}
-            {% for category in categories %}
-                <li class="list-group-item" style="width: {{ width }}%;">
-                    <img src="{{ asset('assets/images/bookcategories/' ~ category.icon) }}" alt="{{ category.title }}" width="30%">
-                    <a href="#"><p class="category-title">{{ category.title }}</p></a>
-                </li>
-            {% endfor %}
+        <div class="col-md-12">
+            <ul class="list-group list-group-horizontal">
+                {#//to set the width of the category#}
+                {% set width = 100 / categories|length %}
+                {% for category in categories %}
+                    <li class="list-group-item" style="width: {{ width }}%;" onclick="loadBooksFromCategory({{ category.id }})">
+                        <img src="{{ asset('assets/images/bookcategories/' ~ category.icon) }}" alt="{{ category.title }}"
+                             width="30%">
+                        <a href="#"><p class="category-title">{{ category.title }}</p></a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    </div>
+    <div class="row">
+        <ul class="col-md-12" id="books_from_category" data-book_html="">
+            <li class="book_preview">
+                <img class="cover" src="#" alt="">
+                <p><span>s</span></p>
+            </li>
         </ul>
     </div>
-    <div class="col-md-4 col-md-offset-8">
-        <h3 class="title">{% if books|length == 0 %}No books found!{% else %}Latest books{{ books|length }}{% endif %}</h3>
-        <ul class="list-group">
-            {% for book in books %}
-                <li class="list-group-item">
-                    {{ book.title }}
-                    <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i>View</a>
-                </li>
-            {% endfor %}
-        </ul>
+    <div class="row">
+        <div class="col-md-4">
+            <h3 class="title">{{ 'Most rated books'|trans }}</h3>
+            <ul class="list-group books">
+                {% for book in mostrated %}
+                    <li class="list-group-item book-item">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="#" class="btn btn-default">{{'View book'|trans}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h3 class="title">{{ 'Most readed books'|trans }}</h3>
+            <ul class="list-group books">
+                {% for book in mostreaded %}
+                    <li class="list-group-item book-item">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="#" class="btn btn-default">{{'View book'|trans}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h3 class="title">{{ 'Latest books'|trans }}</h3>
+            <ul class="list-group books">
+                {% for book in books %}
+                    <li class="list-group-item book-item">
+                        <img class="img-expand" src="{{ asset('uploads/covers/' ~ book.cover) }}" alt="random">
+                        <h3>{{ book.title }}</h3>
+                        <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
+                        <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-default">{{'View book'|trans}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="dashboard.js"></script>
 {% endblock %}

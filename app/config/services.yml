@@ -27,6 +27,10 @@ services:
 
     app.twig_extension:
             class: AppBundle\Twig\AppExtension
+            autowire: true
             public: false
             tags:
                 - { name: twig.extension }
+    app.avatar_uploader:
+        class: AppBundle\Uploader\FileUploader
+        arguments: ['%avatar_directory%']

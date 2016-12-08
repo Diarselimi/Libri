@@ -38,3 +38,4 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/book*, roles: ROLE_USER }
+        - { path: ^/me, roles: ROLE_USER }

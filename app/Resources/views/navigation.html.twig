@@ -6,8 +6,9 @@
             </a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ path('homepage') }}">{{ 'Home'|trans }}</a></li>
-            <li><a href="{{ path('my_shelfed_books') }}">{{ 'My books'|trans }}</a></li>
+            <li class="{{ 'homepage'|isNavActive(app.request.get('_route')) }}"><a href="{{ path('homepage') }}">{{ 'Home'|trans }}</a></li>
+            <li class="{{ 'my_shelfed_books'|isNavActive(app.request.get('_route')) }}"><a href="{{ path('my_shelfed_books') }}" >{{ 'My books'|trans }}</a></li>
+            <li class="{{ 'recommend_index'|isNavActive(app.request.get('_route')) }}"><a href="{{ path('recommend_index') }}" >{{ 'Recommended'|trans }}</a></li>
         </ul>
         <form class="navbar-form navbar-left" action="{{ path('homepage') }}">
             <div class="input-group">
@@ -19,16 +20,17 @@
         </form>
         {% if is_granted('ROLE_USER') %}
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+                <li class="dropdown" class="{{ 'my_profile'|isNavActive(app.request.get('_route')) }}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{{ app.user.name }} <span class="caret"></span></a>
+                       aria-expanded="false"><img src="{{ asset('uploads/covers/aba-06.png') }}" height="20px" width="20px" alt="..." class="img-circle"> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <li><a href="{{ path('my_profile') }}">{{ 'Profile'|trans }}</a></li>
                         <li><a href="#">{{ 'Logout'|trans }}</a></li>
                     </ul>
                 </li>
             </ul>
         {% else %}
-            <a href="{{ path('homepage') }}" class="btn btn-default navbar-btn navbar-right">{{ 'Login'|trans }}</a>
+            <a href="{{ path('login') }}" class="btn btn-default navbar-btn navbar-right">{{ 'Login'|trans }}</a>
             <a href="{{ path('register_user') }}"
                class="btn btn-default navbar-btn navbar-right">{{ 'Register'|trans }}</a>
         {% endif %}
