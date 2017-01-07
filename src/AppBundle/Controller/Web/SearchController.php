@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Web;
 
+use AppBundle\Controller\BaseController;
 use AppBundle\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
