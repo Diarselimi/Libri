@@ -60,7 +60,7 @@ class BookController extends Controller
 
     /**
      * @param Book $book
-     * @Route("/book/{id}", name="view_the_book")
+     * @Route("/book/{slug}", name="view_the_book")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(Book $book)

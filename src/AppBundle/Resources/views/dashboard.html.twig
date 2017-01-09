@@ -66,7 +66,7 @@
                         <img class="img-expand" src="{{ asset('uploads/covers/' ~ book.cover) }}" alt="random">
                         <h3>{{ book.title }}</h3>
                         <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
-                        <a href="{{ path('view_the_book', {id: book.id}) }}" class="btn btn-default">{{'View book'|trans}}</a>
+                        <a href="{{ path('view_the_book', {slug: book.slug}) }}" class="btn btn-default">{{'View book'|trans}}</a>
                     </li>
                 {% endfor %}
             </ul>

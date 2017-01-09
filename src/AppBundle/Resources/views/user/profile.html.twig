@@ -66,12 +66,19 @@
                                 {% endif %}
                             {% endfor %}
 
-                            <p class="alert alert-success raised"><strong>Books read: {{ booksRead }}</strong></p>
+                            {% if goalForm.vars.value.booksToRead is defined %}
+                                {% set boosToRead = goalForm.vars.value.booksToRead %}
+                                {% set percentage = (booksRead / booksToRead ) * 100 %}
+                            {% else %}
+                                {% set booksToRead = 0 %}
+                                {% set percentage = 0 %}
+                            {% endif %}
 
-                            <p class="alert alert-success goal"><strong>Books to read: {{ goalForm.vars.value.booksToRead }}</strong></p>
+                            <p class="alert alert-success raised"><strong>Books read: {{ booksRead }}</strong></p>
+                            <p class="alert alert-success goal"><strong>Books to read: {{ booksToRead }}</strong></p>
 
                             <div class="progress-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0"
-                                 aria-valuemax="100" style="width: {{ (booksRead / goalForm.vars.value.booksToRead ) * 100 }}%;">
+                                 aria-valuemax="100" style="width: {{ percentage }}%;">
                                 <span class="sr-only">60% Complete</span>
                             </div>
                         </div>
@@ -117,8 +124,8 @@
                                     <div class="cd-timeline-content">
                                         <h2>{{ event.title }}</h2>
                                         <p>{{ event.description }}</p>
-                                        <a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}"
-                                           class="cd-read-more">{{ 'Open'|trans }}</a>
+                                        {#<a href="{{ path('view_the_book', {id: event.parentId}) }}#review{{ event.userId }}"#}
+                                           {#class="cd-read-more">{{ 'Open'|trans }}</a>#}
                                         <span class="cd-date">{{ event.createdAt|date('D g:i a') }}</span>
                                     </div> <!-- cd-timeline-content -->
                                 </div> <!-- cd-timeline-block -->

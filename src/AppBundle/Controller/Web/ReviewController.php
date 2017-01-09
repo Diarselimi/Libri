@@ -44,7 +44,7 @@ class ReviewController extends Controller
             $this->addFlash('error', 'Hmmm, something wasn\'t right !');
         }
 
-        return $this->redirectToRoute('view_the_book', ['id' => $book->getId()]);
+        return $this->redirectToRoute('view_the_book', ['slug' => $book->getSlug()]);
     }
 
     /**
@@ -77,7 +77,7 @@ class ReviewController extends Controller
         } else {
             $this->addFlash('error', 'Hmmm, something wasn\'t right !');
         }
-        return $this->redirectToRoute('view_the_book', ['id' => $book->getId()]);
+        return $this->redirectToRoute('view_the_book', ['slug' => $book->getSlug()]);
     }
 
     /**
@@ -98,6 +98,6 @@ class ReviewController extends Controller
         $em->flush();
         $this->addFlash('success', 'Removed successfully !');
 
-        return $this->redirectToRoute('view_the_book', ['id' => $book->getId()]);
+        return $this->redirectToRoute('view_the_book', ['slug' => $book->getSlug()]);
     }
 }

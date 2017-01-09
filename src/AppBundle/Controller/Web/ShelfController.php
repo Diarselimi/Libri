@@ -45,6 +45,6 @@ class ShelfController extends Controller
             $this->addFlash('error', 'Something not right !');
         }
 
-        return $this->redirectToRoute('view_the_book', ['id' => $book->getId()]);
+        return $this->redirectToRoute('view_the_book', ['slug' => $book->getSlug()]);
     }
 }
