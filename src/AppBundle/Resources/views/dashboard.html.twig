@@ -53,7 +53,7 @@
                         <img src="https://s-media-cache-ak0.pinimg.com/236x/9e/b5/95/9eb595e51d197624cfe12e959179994d.jpg" alt="random">
                         <h3>{{ book.title }}</h3>
                         <p>{{ book.description|length > 50 ? book.description|slice(0, 50) ~ '...' : book.description  }}</p>
-                        <a href="#" class="btn btn-default">{{'View book'|trans}}</a>
+                        <a href="{{ path('view_the_book', {slug: book.slug}) }}" class="btn btn-default">{{'View book'|trans}}</a>
                     </li>
                 {% endfor %}
             </ul>

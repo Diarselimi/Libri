@@ -67,7 +67,7 @@
                             {% endfor %}
 
                             {% if goalForm.vars.value.booksToRead is defined %}
-                                {% set boosToRead = goalForm.vars.value.booksToRead %}
+                                {% set booksToRead = goalForm.vars.value.booksToRead %}
                                 {% set percentage = (booksRead / booksToRead ) * 100 %}
                             {% else %}
                                 {% set booksToRead = 0 %}
@@ -102,7 +102,7 @@
                         <div class="input-group">
                             {{ form_widget(goalForm.booksToRead) }}
                             <div class="input-group-btn">
-                                <button class="btn bt-default" type="submit">asd</button>
+                                <button class="btn bt-default" type="submit">{{ 'update'|trans }}</button>
                             </div>
                         </div>
                         {{ form_end(goalForm) }}
