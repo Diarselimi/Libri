@@ -14,6 +14,7 @@ class BookRepository extends EntityRepository
         $q = $this->createQueryBuilder('book')
             ->leftJoin('book.author', 'author')
             ->addSelect('author');
+
         if(!empty($query)) {
             $q->andWhere('author.lastName = :query OR author.firstName LIKE :query OR book.title LIKE :query')
                 ->setParameter('query', '%'.$query.'%');
@@ -56,7 +57,7 @@ class BookRepository extends EntityRepository
      * @param int $limit
      * @return \AppBundle\Entity\Book[]
      */
-    public function findAllRated($limit = 10)
+    public function findMostRated($limit = 10)
     {
         return $this->createQueryBuilder('book')
             ->leftJoin('book.reviews', 'reviews')
@@ -67,7 +68,7 @@ class BookRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findAllReaded($limit = 10)
+    public function findMostReaded($limit = 10)
     {
         return $this->createQueryBuilder('book')
             ->leftJoin('book.usersShelfed', 'users_shelfed')

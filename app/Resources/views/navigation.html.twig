@@ -2,7 +2,7 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">
-                <img alt="Brand" src="{{ asset('assets/images/book_logo.svg') }}" width="20px">
+                <img alt="Brand" src="{{ asset('assets/images/book.svg') }}" width="25px">
             </a>
         </div>
         <ul class="nav navbar-nav">
@@ -10,9 +10,9 @@
             <li class="{{ 'my_shelfed_books'|isNavActive(app.request.get('_route')) }}"><a href="{{ path('my_shelfed_books') }}" >{{ 'My books'|trans }}</a></li>
             <li class="{{ 'recommend_index'|isNavActive(app.request.get('_route')) }}"><a href="{{ path('recommend_index') }}" >{{ 'Recommended'|trans }}</a></li>
         </ul>
-        <form class="navbar-form navbar-left" action="{{ path('homepage') }}">
+        <form class="navbar-form navbar-left" method="get" action="{{ path('search_for_books') }}">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
+                <input type="text" name="search" class="form-control" placeholder="Search for...">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">{{ 'Go'|trans }}</button>
                 </span>

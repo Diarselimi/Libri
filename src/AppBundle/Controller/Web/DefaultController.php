@@ -18,8 +18,8 @@ class DefaultController extends Controller
         $limit = 5;
         $em = $this->getDoctrine()->getManager();
         $books = $em->getRepository(Book::class)->searchAllBooks($request->query->get('search'), $limit);
-        $ratedBooks = $em->getRepository(Book::class)->findAllRated($limit);
-        $readedBooks = $em->getRepository(Book::class)->findAllReaded($limit);
+        $ratedBooks = $em->getRepository(Book::class)->findMostRated($limit);
+        $readedBooks = $em->getRepository(Book::class)->findMostReaded($limit);
         $categories = $em->getRepository(Category::class)->findAll();
         
         // replace this example code with whatever you need
@@ -28,6 +28,19 @@ class DefaultController extends Controller
             'mostrated' => $ratedBooks,
             'mostreaded' => $readedBooks,
             'categories' => $categories
+        ]);
+    }
+
+    /**
+     * @Route("/books", name="search_for_books")
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $books = $em->getRepository(Book::class)->searchAllBooks($request->get('search'), 50);
+
+        return $this->render('@App/book/search.html.twig', [
+            'books' => $books
         ]);
     }
 }

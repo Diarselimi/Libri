@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for book in books %}
+        {% if (book.cover)|does_file_exists %}
+            <img src="{{ asset('/uploads/covers/' ~ book.cover) }}" class="img-thumbnail" alt="Cinque Terre" width="150" height="200">
+        {% else %}
+            <img src="http://cdn.ravelbook.com/images/book-cover-placeholder.png" class="img-thumbnail" alt="Cinque Terre" width="150" height="200">
+        {% endif %}
+    {% endfor %}
+{% endblock %}

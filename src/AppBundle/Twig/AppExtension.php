@@ -15,6 +15,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('avg', array($this, 'findAvarage')),
             new \Twig_SimpleFilter('isNavActive', array($this, 'isNavActive')),
+            new \Twig_SimpleFilter('does_file_exists', array($this, 'fileExists')),
         );
     }
 
@@ -59,5 +60,13 @@ class AppExtension extends \Twig_Extension
         }else{
             return "";
         }
+    }
+
+    public function fileExists($filePath)
+    {
+        $filePath = __DIR__.'/../../../web/uploads/covers/'.$filePath;
+        if(file_exists($filePath))
+            return true;
+        return false;
     }
 }
