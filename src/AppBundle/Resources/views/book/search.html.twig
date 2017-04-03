@@ -9,5 +9,7 @@
                 <img src="http://cdn.ravelbook.com/images/book-cover-placeholder.png" class="img-thumbnail" alt="Cinque Terre" width="150" height="200">
             {% endif %}
         </a>
+        {% else %}
+        <h3>{{ 'No book found'|trans }}</h3>
     {% endfor %}
 {% endblock %}

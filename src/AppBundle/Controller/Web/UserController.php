@@ -100,6 +100,14 @@ class UserController extends Controller
                 ->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
+            $fileName = $this->get('app.avatar_uploader')
+                ->upload($request->files->get('user')['avatar']);
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $user->setAvatar($fileName);
+
+
             $em = $this->getDoctrine()->getManager();
             $this->addFlash('success', 'The user has been registred...');
             $user->setCreatedAt(new \DateTime('now'));

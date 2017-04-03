@@ -8,13 +8,17 @@
                   class="img-responsive img-rounded" alt="The book image">
         </div>
         <div class="col-md-8">
-            <h1>{{ book.title }}</h1>
-            <span>by {{ book.author.firstName }} {{ book.author.lastName }}</span>
-            <ul>
-                <li>Total reviews</li>
-                <li>AVG(rating)</li>
+            <div class="jumbotron">
+                <h1>{{ book.title }}</h1>
+                <p>{{ book.description }}</p>
+                <label>
+                    Author: <a href="{{ '' }}">{{ book.author.firstName }} {{ book.author.lastName }}</a>
+                </label>
+            </div>
+            <ul class="list-group" style="width: 400px;">
+                <li class="list-group-item">{{ book.reviews.count }} <span class="badge">Total reviews</span></li>
+                <li class="list-group-item">{{ book.reviews|avg }} <span class="badge">AVG(rating)</span></li>
             </ul>
-            <p>{{ book.description }}</p>
         </div>
     </div>
     <div class="row">
@@ -31,11 +35,11 @@
                 {{ form_end(rateForm) }}
                 <a href="{{ path('remove_the_review_from_the_book', {id: book.id}) }}">{{ 'Remove rating'|trans }}</a>
             </div>
-            <div class="form-group">
-                {{ form_start(bookToShelf, {'attr':{'class': 'submit_form_js'}}) }}
-                        {{ form_row(bookToShelf.pages, {'attr': {'data-max_pages':book.pages}}) }}
-                {{ form_end(bookToShelf) }}
-            </div>
+            {#<div class="form-group">#}
+                {#{{ form_start(bookToShelf, {'attr':{'class': 'submit_form_js'}}) }}#}
+                        {#{{ form_row(bookToShelf.pages, {'attr': {'data-max_pages':book.pages}}) }}#}
+                {#{{ form_end(bookToShelf) }}#}
+            {#</div>#}
         </div>
     </div>
 
