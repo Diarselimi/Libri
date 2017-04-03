@@ -50,7 +50,7 @@ class BookController extends Controller
             $em->flush();
 
             $this->addFlash('success', 'Thanks, the book is added in the shelf.');
-            $this->redirectToRoute('homepage');
+            $this->redirectToRoute('view_the_book', ['slug' => $book->getSlug()]);
         }
 
         return $this->render('@App/book/register.html.twig', [

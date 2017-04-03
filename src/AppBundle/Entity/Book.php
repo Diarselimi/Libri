@@ -110,6 +110,7 @@ class Book
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
+        $this->publishedAt = new \DateTime();
         $this->reviews = new ArrayCollection();
     }
 

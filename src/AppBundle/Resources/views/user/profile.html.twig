@@ -7,7 +7,7 @@
                 <div class="profile-sidebar">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ asset('uploads/users/avatar/' ~ app.user.avatar) }}" class="img-responsive" alt="">
+                        <img src="{{ asset('uploads/avatar/' ~ app.user.avatar) }}" class="img-responsive" alt="">
                         {{ form_start(avatar) }}
                         {{ form_row(avatar.avatar) }}
                         {{ form_end(avatar) }}

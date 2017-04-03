@@ -35,13 +35,6 @@ class BookType extends AbstractType
             ])
             ->add('description', TextareaType::class)
             ->add('pages')
-            ->add('publishedAt', DateType::class, [
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'html5' => false
-            ])
             ->add('cover', FileType::class, array('label' => 'Cover Image'))
             ->add('isForSale')
             ->add('isForExchange')

@@ -16,7 +16,7 @@
                     <li class="list-group-item" style="width: {{ width }}%;" onclick="loadBooksFromCategory({{ category.id }})">
                         <img src="{{ asset('assets/images/bookcategories/' ~ category.icon) }}" alt="{{ category.title }}"
                              width="30%">
-                        <a href="{{ path('') }}"><p class="category-title">{{ category.title }}</p></a>
+                        <a href=""><p class="category-title">{{ category.title }}</p></a>
                     </li>
                 {% endfor %}
             </ul>
