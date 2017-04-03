@@ -16,7 +16,7 @@
                     <li class="list-group-item" style="width: {{ width }}%;" onclick="loadBooksFromCategory({{ category.id }})">
                         <img src="{{ asset('assets/images/bookcategories/' ~ category.icon) }}" alt="{{ category.title }}"
                              width="30%">
-                        <a href="#"><p class="category-title">{{ category.title }}</p></a>
+                        <a href="{{ path('') }}"><p class="category-title">{{ category.title }}</p></a>
                     </li>
                 {% endfor %}
             </ul>
@@ -68,5 +68,5 @@
 
 {% block scripts %}
     {{ parent() }}
-    <script src="dashboard.js"></script>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 {% endblock %}

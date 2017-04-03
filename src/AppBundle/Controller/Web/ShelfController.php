@@ -33,8 +33,10 @@ class ShelfController extends Controller
         if($form->isValid()) {
             if(strtolower($bookToShelf->getShelf()->getName()) == 'read') {
                 $goal = $em->getRepository(Goal::class)->findCurrentGoal();
-                $goal->setBooksRead($goal->getBooksRead() + 1);
-                $em->persist($goal);
+                if($goal){
+                    $goal->setBooksRead($goal->getBooksRead() + 1);
+                    $em->persist($goal);
+                }
             }
             $bookToShelf->setUser($this->getUser());
             $bookToShelf->setBook($book);

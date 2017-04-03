@@ -38,8 +38,7 @@ class BookType extends AbstractType
             ->add('publishedAt', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => [
-                    'data-provide' => 'datepicker',
-                    'data-date-format' => 'yyyy-mm-dd'
+                    'class' => 'datetimepicker',
                 ],
                 'html5' => false
             ])
