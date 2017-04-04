@@ -16,6 +16,7 @@ class BookToShelfType extends AbstractType
     {
         $builder->add('shelf', EntityType::class, [
             'class' => Shelf::class,
+            'placeholder' => 'Choose a shelf',
             'choice_label' => 'name',
             'choice_value' => 'id'
         ]);

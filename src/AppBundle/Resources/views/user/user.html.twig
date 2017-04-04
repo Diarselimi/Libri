@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row profile">
+            <div class="col-md-3">
+                <div class="profile-sidebar">
+                    <!-- SIDEBAR USERPIC -->
+                    <div class="profile-userpic">
+                        <img src="{{ asset('uploads/avatar/' ~ user.avatar) }}" class="img-responsive" alt="">
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name">
+                            {{ user.name }}
+                            {{ user.lastname }}
+                        </div>
+                        {{ user.email }}
+                    </div>
+                    <!-- END SIDEBAR USER TITLE -->
+                    <!-- SIDEBAR BUTTONS -->
+                    {#<div class="profile-userbuttons">#}
+                    {#<button type="button" class="btn btn-success btn-sm">Follow</button>#}
+                    {#<button type="button" class="btn btn-danger btn-sm">Message</button>#}
+                    {#</div>#}
+                    <!-- END SIDEBAR BUTTONS -->
+                    <!-- SIDEBAR MENU -->
+                    <div class="profile-usermenu">
+                        <ul class="nav">
+                            <li role="presentation" class="active">
+                                <a href="#info" aria-controls="profile" role="tab" data-toggle="tab">
+                                    <i class="glyphicon glyphicon-home"></i>
+                                    {{ 'Profile'|trans }} </a>
+                            </li>
+                            <li>
+                                <a href="#books" aria-controls="profile" role="tab" data-toggle="tab">
+                                    <i class="glyphicon glyphicon-flag"></i>
+                                    {{ 'Books'|trans }} </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END MENU -->
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="info">
+                        <canvas id="myChart" width="400" height="100">asd</canvas>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="books">
+                        <div class="row">
+                            {% for userbook in user.books %}
+                                {% include('@App/book/_book_product.html.twig') %}
+                            {% else %}
+                                <h3>{{ 'This user owns no books'|trans }}</h3>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tab panes -->
+{% endblock %}
+
+{% block stylesheet %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/vertical-timeline.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/book_product.css') }}">
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/form.js') }}"></script>
+    <script src="{{ asset('assets/js/vertical-timeline.js') }}"></script>
+    <script src="{{ asset('assets/node_modules/chart.js/dist/Chart.js') }}"></script>
+    <script>
+        var ctx = document.getElementById("myChart");
+        var dbData;
+
+        $.getJSON("{{ path('get_data_for_one_year') }}", function (result) {
+            dbData = JSON.parse(result);
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"],
+                    datasets: [
+                        {
+                            label: "Total pages read",
+                            fill: true,
+                            lineTension: 0.3,
+                            backgroundColor: "rgba(75,192,192,0.4)",
+                            borderColor: "rgba(75,192,192,1)",
+                            borderCapStyle: 'butt',
+                            borderDash: [],
+                            borderDashOffset: 0.0,
+                            borderJoinStyle: 'miter',
+                            pointBorderColor: "rgba(75,192,192,1)",
+                            pointBackgroundColor: "#fff",
+                            pointBorderWidth: 1,
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                            pointHoverBorderColor: "rgba(220,220,220,0)",
+                            pointHoverBorderWidth: 2,
+                            pointRadius: 1,
+                            pointHitRadius: 10,
+                            data: dbData,
+                            spanGaps: true,
+
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

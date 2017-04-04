@@ -1,0 +1,22 @@
+<div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+        {% if (userbook.book.cover)|does_file_exists %}
+            <img src="{{ asset('/uploads/covers/' ~ userbook.book.cover) }}"
+                 alt="Cinque Terre" class="product-image" >
+        {% else %}
+            <img src="http://cdn.ravelbook.com/images/book-cover-placeholder.png"
+                 alt="{{ userbook.book.title|humanize }}" class="product-image" >
+        {% endif %}
+        <div class="caption">
+            <h3>{{ userbook.book.title|humanize }}</h3>
+            <p>
+                {% if userbook.forSale %}
+                    <a href="#" class="btn btn-success btn-sm" role="button"><i class="glyphicon glyphicon-usd"></i></a>
+                {% endif %}
+                {% if userbook.forExchange %}
+                    <a href="#" class="btn btn-success btn-sm" role="button"><i class="glyphicon glyphicon-refresh"></i></a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>

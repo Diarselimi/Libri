@@ -94,12 +94,17 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Goal", mappedBy="user")
      */
     private $goals;
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserBook", mappedBy="user")
+     */
+    private $books;
 
 
     public function __construct()
     {
         $this->isActive = true;
         $this->updatedAt = new \DateTime('now');
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -503,5 +508,39 @@ class User implements UserInterface, \Serializable
     public function getGoals()
     {
         return $this->goals;
+    }
+
+    /**
+     * Add book
+     *
+     * @param \AppBundle\Entity\UserBook $book
+     *
+     * @return User
+     */
+    public function addBook(\AppBundle\Entity\UserBook $book)
+    {
+        $this->books[] = $book;
+
+        return $this;
+    }
+
+    /**
+     * Remove book
+     *
+     * @param \AppBundle\Entity\UserBook $book
+     */
+    public function removeBook(\AppBundle\Entity\UserBook $book)
+    {
+        $this->books->removeElement($book);
+    }
+
+    /**
+     * Get books
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBooks()
+    {
+        return $this->books;
     }
 }

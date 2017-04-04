@@ -17,7 +17,28 @@
             </div>
             <ul class="list-group" style="width: 400px;">
                 <li class="list-group-item">{{ book.reviews.count }} <span class="badge">Total reviews</span></li>
-                <li class="list-group-item">{{ book.reviews|avg }} <span class="badge">AVG(rating)</span></li>
+                <li class="list-group-item">{{ book.reviews|avg }} <span class="badge">AVG (rating)</span></li>
+                <li class="list-group-item" data-toggle="modal" data-target="#owners">{{ book.owners.count }} <span class="badge">Books (copies)</span></li>
+                <!-- Modal -->
+                <div class="modal fade" id="owners" tabindex="-1" role="dialog" aria-labelledby="ownersLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                            </div>
+                            <div class="modal-body">
+                                {% for userBook in book.owners %}
+                                    <a href="{{ path('visit_member_profile', {id: userBook.user.id}) }}">{{ userBook.user.username }}</a>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ul>
         </div>
     </div>
@@ -28,6 +49,27 @@
                 {{ form_end(shelfForm) }}
                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
                         data-target="#bookReview">{{ 'Write a review'|trans }}</button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="book_own_options" tabindex="-1" role="dialog" aria-labelledby="ownersLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        {{ form_start(userbookForm) }}
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">{{ 'Since you own this book'|trans }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            {{ form_row(userbookForm.forSale) }}
+                            {{ form_row(userbookForm.forExchange) }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                        {{ form_end(userbookForm) }}
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 {{ form_start(rateForm, {'attr':{'class': 'submit_form_js'}}) }}
@@ -72,7 +114,6 @@
     {# end modal #}
     <div class="col-md-12">
         <h3>Reviews by others</h3>
-        <p>Here will be the reviews by others but not yours and more info, will be redesigned also !</p>
         <div class="well">
             {% for feedback in book.reviews %}
                 <div class="row" id="review{{ feedback.user.id }}">

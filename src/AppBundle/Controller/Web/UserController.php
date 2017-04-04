@@ -7,8 +7,10 @@ use AppBundle\Entity\Goal;
 use AppBundle\Entity\Shelf;
 use AppBundle\Entity\Timeline;
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserBook;
 use AppBundle\Entity\UserBookShelf;
 use AppBundle\Form\AvatarType;
+use AppBundle\Form\UserBookType;
 use AppBundle\Form\UserType;
 use AppBundle\Form\GoalType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -170,6 +172,38 @@ class UserController extends Controller
 
             return $this->redirect($this->generateUrl('my_profile'));
         }
+    }
+
+    /**
+     * @param Book $book
+     * @Route("/addowner/{id}", name="add_owner_for_book")
+     */
+    public function addBookAction(Request $request, Book $book)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $userBook = $this->createForm(UserBookType::class);
+        $userBook->handleRequest($request);
+        if($userBook->isValid()){
+            $userBook = $userBook->getData();
+            $userBook->setUser($this->getUser());
+            $userBook->setBook($book);
+            $em->persist($userBook);
+            $em->flush();
+            $this->addFlash('success', 'Great job, others will contact you soon.');
+        }
+
+        return $this->redirectToRoute('view_the_book',['slug' => $book->getSlug()]);
+    }
+
+    /**
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/user/{id}", name="visit_member_profile")
+     */
+    public function visitAction(User $user)
+    {
+        return $this->render('@App/user/user.html.twig', ['user' => $user]);
     }
 
 }

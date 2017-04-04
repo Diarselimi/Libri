@@ -4,12 +4,14 @@ namespace AppBundle\Controller\Web;
 
 use AppBundle\Entity\Book;
 use AppBundle\Entity\Review;
+use AppBundle\Entity\UserBook;
 use AppBundle\Entity\UserBookShelf;
 use AppBundle\Form\BookPagesReadType;
 use AppBundle\Form\BookToShelfType;
 use AppBundle\Form\BookType;
 use AppBundle\Form\RateType;
 use AppBundle\Form\ReviewType;
+use AppBundle\Form\UserBookType;
 use AppBundle\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -28,6 +30,7 @@ class BookController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            /** @var Book $book */
             $book = $form->getData();
 
             // $file stores the uploaded PDF file
@@ -45,8 +48,16 @@ class BookController extends Controller
             // Update the 'brochure' property to store the PDF file name
             // instead of its contents
             $book->setCover($fileName);
-
             $em->persist($book);
+
+            // set the owner of the book
+            $owner = new UserBook();
+            $owner->setBook($book);
+            $owner->setUser($this->getUser());
+            $owner->setForSale($book->getIsForSale());
+            $owner->setForExchange($book->getIsForExchange());
+            $em->persist($owner);
+
             $em->flush();
 
             $this->addFlash('success', 'Thanks, the book is added in the shelf.');
@@ -71,6 +82,12 @@ class BookController extends Controller
             'user' => $this->getUser()->getId(),
             'book' => $book->getId()
         ]);
+
+        $userBook = $this->createForm(UserBookType::class, new UserBook(), [
+            'action' => $this->generateUrl('add_owner_for_book', ['id' => $book->getId()]),
+            'method' => 'post'
+        ]);
+
         $addToShelfForm = $this->createForm(BookToShelfType::class, $bookToShelf, [
             'action' => $this->generateUrl('save_book_in_shelf', ['id' => $book->getId()]),
             'method' => 'post'
@@ -111,7 +128,8 @@ class BookController extends Controller
             'reviewForm' => $reviewForm->createView(),
             'shelfForm' => $addToShelfForm->createView(),
             'rateForm' => $rateForm->createView(),
-            'bookToShelf' => $updatePages->createView()
+            'bookToShelf' => $updatePages->createView(),
+            'userbookForm' => $userBook->createView()
         ]);
     }
 

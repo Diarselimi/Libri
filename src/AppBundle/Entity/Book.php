@@ -94,6 +94,11 @@ class Book
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserBook", mappedBy="book")
+     */
+    private $owners;
+
     public function getCover()
     {
         return $this->cover;
@@ -464,4 +469,38 @@ class Book
     }
 
 
+
+    /**
+     * Add owner
+     *
+     * @param \AppBundle\Entity\UserBook $owner
+     *
+     * @return Book
+     */
+    public function addOwner(\AppBundle\Entity\UserBook $owner)
+    {
+        $this->owners[] = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Remove owner
+     *
+     * @param \AppBundle\Entity\UserBook $owner
+     */
+    public function removeOwner(\AppBundle\Entity\UserBook $owner)
+    {
+        $this->owners->removeElement($owner);
+    }
+
+    /**
+     * Get owners
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwners()
+    {
+        return $this->owners;
+    }
 }

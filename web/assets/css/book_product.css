@@ -1,0 +1,111 @@
+* a:focus, * a:active, * a:focus:active, * button:focus, * button:active, * button:focus:active, * input:focus, * input:active, * input:focus:active {
+    outline: none;
+}
+
+body {
+    color: #777;
+}
+
+.product {
+    border: 1px solid #777;
+    display: inline-block;
+    font-size: 12px;
+    margin: 15px;
+    padding: 10px;
+    position: relative;
+    width: 300px;
+}
+.product a {
+    color: dodgerblue;
+    text-decoration: none;
+}
+.product a:hover {
+    color: #1873cc;
+    text-decoration: none;
+}
+.product a p {
+    color: #999;
+}
+.product .button.primary {
+    background: dodgerblue;
+    border: none;
+    border-radius: 0;
+    bottom: 0;
+    color: white;
+    display: block;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 15px;
+    padding: 0 15px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+.product .button.primary:hover {
+    background: #1873cc;
+}
+.product .button.primary.added:before {
+    content: "\f00c";
+    font-family: FontAwesome;
+    position: absolute;
+    -webkit-transform: translateX(-1.2em);
+    transform: translateX(-1.2em);
+}
+.product .details .name {
+    color: dodgerblue;
+    font-size: 18px;
+}
+.product .details .from,
+.product .details .code {
+    color: #bbb;
+    font-size: 10px;
+    line-height: 10px;
+    margin: 0;
+}
+.product .pricing {
+    margin-top: 15px;
+}
+.product .pricing .price {
+    font-size: 10px;
+    font-weight: normal;
+    line-height: 10px;
+}
+.product .pricing .price b {
+    display: block;
+    font-size: 24px;
+    line-height: 24px;
+}
+.product .pricing .price.member {
+    color: #ff8424;
+}
+.product .pricing .price.msrp {
+    color: #777;
+    display: none;
+}
+.product .description {
+    margin-top: 15px;
+}
+
+#preview .product {
+    border: none;
+    margin: 0 -15px;
+    width: auto;
+}
+#preview .product a.button.primary {
+    position: relative;
+}
+#preview .product .pricing .price {
+    display: inline-block;
+    float: left;
+}
+#preview .product .pricing .price.member {
+    padding: 0 15px 0 0;
+}
+#preview .product .pricing .price.msrp {
+    border-left: 1px solid #ccc;
+    padding: 0 0 0 15px;
+}
+#preview .product .options {
+    clear: both;
+}
