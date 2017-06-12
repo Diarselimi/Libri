@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: diar
- * Date: 9/17/16
- * Time: 1:20 PM
- */
 
 namespace AppBundle\Entity;
-
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +17,8 @@ use AppBundle\Entity\Goal;
  */
 class User implements UserInterface, \Serializable
 {
+    const TYPE_USER_MEMBER = 1;
+    const TYPE_USER_LIBRARY = 2;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
