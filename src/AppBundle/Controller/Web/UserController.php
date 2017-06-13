@@ -115,6 +115,8 @@ class UserController extends Controller
             $user->setCreatedAt(new \DateTime('now'));
             $em->persist($user);
             $em->flush();
+
+            return $this->redirectToRoute('homepage');
         }
         return $this->render('@App/register.html.twig', ['form' => $form->createView()]);
     }

@@ -94,6 +94,10 @@ class User implements UserInterface, \Serializable
      */
     private $books;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $userType = self::TYPE_USER_MEMBER;
 
     public function __construct()
     {
@@ -328,8 +332,12 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         $roles = $this->roles;
-        if(!in_array('ROLE_USER', $roles)) {
-            $roles[] = 'ROLE_USER';
+        if(!in_array('ROLE_USER', $roles) && !in_array('ROLE_LIBRARY', $roles)) {
+            if($this->userType == self::TYPE_USER_MEMBER) {
+                $roles[] = 'ROLE_USER';
+            } else {
+                $roles[] = 'ROLE_LIBRARY';
+            }
         }
         return $roles;
     }
@@ -537,5 +545,21 @@ class User implements UserInterface, \Serializable
     public function getBooks()
     {
         return $this->books;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserType()
+    {
+        return $this->userType;
+    }
+
+    /**
+     * @param mixed $userType
+     */
+    public function setUserType($userType)
+    {
+        $this->userType = $userType;
     }
 }

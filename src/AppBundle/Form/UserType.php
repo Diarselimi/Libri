@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -19,6 +20,14 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('userType', ChoiceType::class, [
+                'choices' => [
+                    'user_type' => User::TYPE_USER_MEMBER,
+                    'library_type' => User::TYPE_USER_LIBRARY
+                ],
+                'multiple' => false,
+                'expanded' => true
+            ])
             ->add('avatar', FileType::class, [
                 'data_class' => null
             ])
@@ -40,7 +49,8 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => 'AppBundle\Entity\User',
+            'translation_domain' => null
         ));
     }
 }
