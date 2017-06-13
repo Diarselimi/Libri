@@ -19,6 +19,7 @@ security:
 
     role_hierarchy:
         ROLE_USER: [ROLE_STORE, ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_LIBRARY: [ROLE_LIBRARY]
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -39,3 +40,4 @@ security:
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/book*, roles: ROLE_USER }
         - { path: ^/me, roles: ROLE_USER }
+#        - { path: ^/library*, roles: ROLE_LIBRARY}
