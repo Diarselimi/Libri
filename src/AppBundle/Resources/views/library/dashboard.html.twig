@@ -2,13 +2,16 @@
 
 {% block body %}
     <h1>This is the dash !</h1>
-    <form action="" method="post">
+    <form action="{{ path('library_import_books') }}" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="">File</label>
             <input type="file" class="form-control" name="books-file" id="excel-file">
         </div>
         <span class="alert alert-info">Here will be shown the columns from the file and you can choose which one is which.</span>
         <div id="my_file_output" class=""></div>
+        <div class="form-group">
+            <button class="btn btn-primary">Import</button>
+        </div>
     </form>
 {% endblock %}
 
@@ -49,12 +52,12 @@
                     values = values[0].replace(new RegExp("(,)+(?![^\"]+\")", "g"), ";");
                     values = values.split(';');
                     var outputDiv = $('#my_file_output');
-                    values.map(function(value){
+                    values.map(function(value, position){
                         outputDiv.append(
                             '<div class="col-md-2">' +
                             '<div class="form-group">' +
                             '<label> '+ value +' </label>' +
-                            '{{ include('@App/library/includes/import_item_dropdown_type_select.html.twig')|replace({"\n":""})|raw }}' +
+                            '{{ include('@App/library/includes/import_item_dropdown_type_select.html.twig')|replace({"\n":""})|raw }}'.replace(/__position__/, position) +
                             '</div>' +
                             '</div>'
                         );
