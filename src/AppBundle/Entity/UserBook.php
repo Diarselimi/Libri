@@ -21,7 +21,7 @@ class UserBook
      */
     private $user;
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Book", inversedBy="owners")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Book", inversedBy="owners", cascade={"persist"})
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
     private $book;
@@ -41,6 +41,10 @@ class UserBook
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $price;
 
 
     public function __construct()
@@ -204,4 +208,22 @@ class UserBook
     {
         return $this->updatedAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+
 }

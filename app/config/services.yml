@@ -34,3 +34,9 @@ services:
     app.avatar_uploader:
         class: AppBundle\Uploader\FileUploader
         arguments: ['%avatar_directory%']
+
+    app.excel_import_manager:
+        class: AppBundle\Services\ImportManager
+        arguments:
+            - "@phpexcel"
+            - "@doctrine.orm.entity_manager"

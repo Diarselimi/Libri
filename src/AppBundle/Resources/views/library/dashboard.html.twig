@@ -13,6 +13,17 @@
             <button class="btn btn-primary">Import</button>
         </div>
     </form>
+
+    {% for userbook in books %}
+        <div class="book">
+            <div class="cover"></div>
+            <br>
+            <div class="title">{{ userbook.book.title|humanize }}</div>
+            <div class="price">{{ userbook.price }}</div>
+        </div>
+    {% endfor %}
+
+    <div id="file-content"></div>
 {% endblock %}
 
 {% block scripts %}
@@ -69,5 +80,13 @@
             // Tell JS To Start Reading The File.. You could delay this if desired
             reader.readAsBinaryString(oFile);
         }
+
+        $.get('{{ asset('crawled-images/think_and_grow_rich.txt') }}', function (data) {
+            var urls = data.split('\n');
+            console.log(urls);
+            urls.map(function (item) {
+                $('#file-content').append('<img src="'+ item +'">');
+            })
+        });
     </script>
 {% endblock %}
