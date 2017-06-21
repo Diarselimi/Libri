@@ -14,14 +14,21 @@
         </div>
     </form>
 
-    {% for userbook in books %}
-        <div class="book">
-            <div class="cover"></div>
-            <br>
-            <div class="title">{{ userbook.book.title|humanize }}</div>
-            <div class="price">{{ userbook.price }}</div>
-        </div>
-    {% endfor %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{ 'Menu' }}</th>
+            <th>{{ 'Book title' }}</th>
+            <th>{{ 'Author' }}</th>
+            <th>{{ 'Avg Rating' }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for userbook in books %}
+            {% include('@App/library/includes/admin_book_view.html.twig') %}
+        {% endfor %}
+        </tbody>
+    </table>
 
     <div id="file-content"></div>
 {% endblock %}
@@ -35,9 +42,9 @@
         var keys = ["Title", "Price", "Available", "Sold", "Author"];
         // This is for getting the content of the XLS files
         var oFileIn;
-        $(function() {
+        $(function () {
             oFileIn = document.getElementById('excel-file');
-            if(oFileIn.addEventListener) {
+            if (oFileIn.addEventListener) {
                 oFileIn.addEventListener('change', filePicked, false);
             }
         });
@@ -51,23 +58,23 @@
             var reader = new FileReader();
 
             // Ready The Event For When A File Gets Selected
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var data = e.target.result;
                 var cfb = XLS.CFB.read(data, {type: 'binary'});
                 var wb = XLS.parse_xlscfb(cfb);
                 // Loop Over Each Sheet
-                wb.SheetNames.forEach(function(sheetName) {
+                wb.SheetNames.forEach(function (sheetName) {
                     // Obtain The Current Row As CSV
                     var sCSV = XLS.utils.make_csv(wb.Sheets[sheetName]);
                     var values = sCSV.split('\n');
                     values = values[0].replace(new RegExp("(,)+(?![^\"]+\")", "g"), ";");
                     values = values.split(';');
                     var outputDiv = $('#my_file_output');
-                    values.map(function(value, position){
+                    values.map(function (value, position) {
                         outputDiv.append(
                             '<div class="col-md-2">' +
                             '<div class="form-group">' +
-                            '<label> '+ value +' </label>' +
+                            '<label> ' + value + ' </label>' +
                             '{{ include('@App/library/includes/import_item_dropdown_type_select.html.twig')|replace({"\n":""})|raw }}'.replace(/__position__/, position) +
                             '</div>' +
                             '</div>'
@@ -85,8 +92,19 @@
             var urls = data.split('\n');
             console.log(urls);
             urls.map(function (item) {
-                $('#file-content').append('<img src="'+ item +'">');
+                $('#file-content').append('<img src="' + item + '">');
             })
         });
     </script>
+{% endblock %}
+
+{% block stylesheet %}
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+    <link href="{{ asset('assets/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
+    <!-- Custom Fonts -->
+    <link href="{{ asset('assets/bower_components/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/material-design-icons.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/node_modules/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}

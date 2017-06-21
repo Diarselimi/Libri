@@ -220,4 +220,9 @@ class Author
     {
         return $this->getFirstName();
     }
+
+    public function getFullName()
+    {
+        return $this->firstName. ' ' .$this->lastName;
+    }
 }

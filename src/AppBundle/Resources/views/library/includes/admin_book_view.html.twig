@@ -1,0 +1,11 @@
+
+    <tr>
+        <th scope="row">
+            <button class="btn btn-info btn-sm" title="ndryshoje"><i class="material-icons">edit</i></button>
+            <button class="btn btn-info btn-sm" title="markoje si te kopje e shitur"><i class="material-icons">close</i></button>
+            <button class="btn btn-info btn-sm" title="Zgjedhi fotot qe pershtaten"><i class="material-icons">photo_library</i></button>
+        </th>
+        <td>{{ userbook.book.title }}</td>
+        <td>{{ userbook.book.author.fullname }}</td>
+        <td>{{ userbook.book.reviews|avg }}</td>
+    </tr>
