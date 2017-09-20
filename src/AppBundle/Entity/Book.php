@@ -34,7 +34,7 @@ class Book
      * @Assert\Range(min=0, minMessage="Negative number ..! C'mon give me a real number.")
      * @ORM\Column(type="integer")
      */
-    private $pages;
+    private $pages = 0;
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Author", inversedBy="books")
      * @Assert\NotBlank()
@@ -55,20 +55,6 @@ class Book
      */
     private $publishedAt;
     /**
-     * @var
-     * @ORM\Column(name="is_for_sale", type="boolean")
-     */
-    private $isForSale = 0;
-    /**
-     * @var
-     * @ORM\Column(name="is_for_exchange", type="boolean")
-     */
-    private $isForExchange = 0;
-    /**
-     * @ORM\Column(name="peaces_in_shelf", type="integer")
-     */
-    private $peacesInShelf = 0;
-    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="book")
      */
     private $reviews;
@@ -82,7 +68,7 @@ class Book
      *
      * @Assert\NotBlank(message="Please add a cover for this book.")
      */
-    private $cover;
+    private $cover = '';
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="books")
      */
@@ -117,22 +103,6 @@ class Book
         $this->updatedAt = new \DateTime();
         $this->publishedAt = new \DateTime();
         $this->reviews = new ArrayCollection();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPublishedAt()
-    {
-        return $this->publishedAt;
-    }
-
-    /**
-     * @param mixed $publishedAt
-     */
-    public function setPublishedAt($publishedAt)
-    {
-        $this->publishedAt = $publishedAt;
     }
 
     /**
@@ -266,6 +236,54 @@ class Book
     }
 
     /**
+     * Set publishedAt
+     *
+     * @param \DateTime $publishedAt
+     *
+     * @return Book
+     */
+    public function setPublishedAt($publishedAt)
+    {
+        $this->publishedAt = $publishedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get publishedAt
+     *
+     * @return \DateTime
+     */
+    public function getPublishedAt()
+    {
+        return $this->publishedAt;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Book
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set author
      *
      * @param \AppBundle\Entity\Author $author
@@ -289,77 +307,6 @@ class Book
         return $this->author;
     }
 
-    /**
-     * Set isForSale
-     *
-     * @param boolean $isForSale
-     *
-     * @return Book
-     */
-    public function setIsForSale($isForSale)
-    {
-        $this->isForSale = $isForSale;
-
-        return $this;
-    }
-
-    /**
-     * Get isForSale
-     *
-     * @return boolean
-     */
-    public function getIsForSale()
-    {
-        return $this->isForSale;
-    }
-
-    /**
-     * Set isForExchange
-     *
-     * @param boolean $isForExchange
-     *
-     * @return Book
-     */
-    public function setIsForExchange($isForExchange)
-    {
-        $this->isForExchange = $isForExchange;
-
-        return $this;
-    }
-
-    /**
-     * Get isForExchange
-     *
-     * @return boolean
-     */
-    public function getIsForExchange()
-    {
-        return $this->isForExchange;
-    }
-
-    /**
-     * Set peacesInShelf
-     *
-     * @param integer $peacesInShelf
-     *
-     * @return Book
-     */
-    public function setPeacesInShelf($peacesInShelf)
-    {
-        $this->peacesInShelf = $peacesInShelf;
-
-        return $this;
-    }
-
-    /**
-     * Get peacesInShelf
-     *
-     * @return integer
-     */
-    public function getPeacesInShelf()
-    {
-        return $this->peacesInShelf;
-    }
     /**
      * Add review
      *
@@ -451,24 +398,6 @@ class Book
     {
         return $this->category;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param mixed $slug
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-    }
-
-
 
     /**
      * Add owner

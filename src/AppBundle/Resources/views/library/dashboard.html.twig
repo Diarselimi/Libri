@@ -2,4 +2,109 @@
 
 {% block body %}
     <h1>This is the dash !</h1>
+    <form action="{{ path('library_import_books') }}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="">File</label>
+            <input type="file" class="form-control" name="books-file" id="excel-file">
+        </div>
+        <span class="alert alert-info">Here will be shown the columns from the file and you can choose which one is which.</span>
+        <div id="my_file_output" class=""></div>
+        <div class="form-group">
+            <button class="btn btn-primary">Import</button>
+        </div>
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{{ 'Menu' }}</th>
+            <th>{{ 'Book title' }}</th>
+            <th>{{ 'Author' }}</th>
+            <th>{{ 'Avg Rating' }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for userbook in books %}
+            {% include('@App/library/includes/admin_book_view.html.twig') %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="file-content"></div>
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script>
+        var keys = ["Title", "Price", "Available", "Sold", "Author"];
+        // This is for getting the content of the XLS files
+        var oFileIn;
+        $(function () {
+            oFileIn = document.getElementById('excel-file');
+            if (oFileIn.addEventListener) {
+                oFileIn.addEventListener('change', filePicked, false);
+            }
+        });
+
+
+        function filePicked(oEvent) {
+            // Get The File From The Input
+            var oFile = oEvent.target.files[0];
+            var sFilename = oFile.name;
+            // Create A File Reader HTML5
+            var reader = new FileReader();
+
+            // Ready The Event For When A File Gets Selected
+            reader.onload = function (e) {
+                var data = e.target.result;
+                var cfb = XLS.CFB.read(data, {type: 'binary'});
+                var wb = XLS.parse_xlscfb(cfb);
+                // Loop Over Each Sheet
+                wb.SheetNames.forEach(function (sheetName) {
+                    // Obtain The Current Row As CSV
+                    var sCSV = XLS.utils.make_csv(wb.Sheets[sheetName]);
+                    var values = sCSV.split('\n');
+                    values = values[0].replace(new RegExp("(,)+(?![^\"]+\")", "g"), ";");
+                    values = values.split(';');
+                    var outputDiv = $('#my_file_output');
+                    values.map(function (value, position) {
+                        outputDiv.append(
+                            '<div class="col-md-2">' +
+                            '<div class="form-group">' +
+                            '<label> ' + value + ' </label>' +
+                            '{{ include('@App/library/includes/import_item_dropdown_type_select.html.twig')|replace({"\n":""})|raw }}'.replace(/__position__/, position) +
+                            '</div>' +
+                            '</div>'
+                        );
+                    });
+
+                });
+            };
+
+            // Tell JS To Start Reading The File.. You could delay this if desired
+            reader.readAsBinaryString(oFile);
+        }
+
+        $.get('{{ asset('crawled-images/think_and_grow_rich.txt') }}', function (data) {
+            var urls = data.split('\n');
+            console.log(urls);
+            urls.map(function (item) {
+                $('#file-content').append('<img src="' + item + '">');
+            })
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheet %}
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+    <link href="{{ asset('assets/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
+    <!-- Custom Fonts -->
+    <link href="{{ asset('assets/bower_components/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/material-design-icons.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/node_modules/jquery-bar-rating/dist/themes/fontawesome-stars.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}

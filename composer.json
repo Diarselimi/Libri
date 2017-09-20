@@ -37,7 +37,8 @@
         "behat/symfony2-extension": "^2.0",
         "nelmio/api-doc-bundle": "^2.13",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "doctrine/doctrine-fixtures-bundle": "^2.3"
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "liuggio/excelbundle": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
